@@ -1,0 +1,164 @@
+//HW06 Sorting Algorithms
+/*
+Gerardo Alberto Mendoza Castillo A01666338
+Fabian Lopez Perez A01661836
+*/
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+vector<string> read_file(string file_name) {
+    ifstream imported_file(file_name);
+    if (!imported_file)
+        cout << "Error opening txt file" << endl;
+    vector<string> file_content;
+    string line;
+    while (getline(imported_file, line))
+        file_content.push_back(line);
+    imported_file.close();
+    return file_content;
+}
+
+vector<int> line_to_vector(string line) {
+    if (!line.empty() && line.front() == '[' && line.back() == ']') {
+        line = line.substr(1, line.size() - 2);
+    }
+
+    for (char& c : line) {
+        if (c == ',') c = ' ';
+    }
+
+    vector<int> created_vector;
+    stringstream ss(line);
+    int x;
+    while (ss >> x) {
+        created_vector.push_back(x);
+    }
+    return created_vector;
+}
+
+
+vector<int> bucketSort(vector<int>& arr, int bucketCount) {
+    if (arr.empty()) return arr;
+
+    int minVal = *min_element(arr.begin(), arr.end());
+    int maxVal = *max_element(arr.begin(), arr.end());
+
+    int range = (maxVal - minVal + 1) / bucketCount + 1;
+
+    vector<vector<int>> buckets(bucketCount);
+
+    for (int num : arr) {
+        int idx = (num - minVal) / range;
+        if (idx >= bucketCount) idx = bucketCount - 1;      // clamp por seguridad
+        if (idx < 0) idx = 0;
+        buckets[idx].push_back(num);
+    }
+
+    vector<int> sorted;
+    for (auto& b : buckets) {
+        sort(b.begin(), b.end());
+        sorted.insert(sorted.end(), b.begin(), b.end());
+    }
+    return sorted;
+}
+vector<int> insertionSort(vector<int> arr) {
+    for (size_t i = 1; i < arr.size(); ++i) {
+        int key = arr[i];
+        size_t j = i;
+        while (j > 0 && arr[j - 1] > key) {
+            arr[j] = arr[j - 1];
+            --j;
+        }
+        arr[j] = key;
+    }
+    return arr;
+}
+static vector<int> mergeTwo(const vector<int>& a, const vector<int>& b) {
+    vector<int> out;
+    out.reserve(a.size() + b.size());
+    size_t i = 0, j = 0;
+    while (i < a.size() && j < b.size()) {
+        if (a[i] <= b[j]) out.push_back(a[i++]);
+        else               out.push_back(b[j++]);
+    }
+    while (i < a.size()) out.push_back(a[i++]);
+    while (j < b.size()) out.push_back(b[j++]);
+    return out;
+}
+
+vector<int> mergeSort(vector<int> arr) { // copia para no mutar el original
+    if (arr.size() <= 1) return arr;
+    size_t mid = arr.size() / 2;
+    vector<int> left(arr.begin(), arr.begin() + mid);
+    vector<int> right(arr.begin() + mid, arr.end());
+    left = mergeSort(left);
+    right = mergeSort(right);
+    return mergeTwo(left, right);
+}
+
+int main() {
+    string file_name;
+    cout << "Inserte el nombre del archivo: ";
+    cin >> file_name;
+
+    vector<string> file_content = read_file(file_name);
+
+    vector<int> L = line_to_vector(file_content[0]);
+
+    unsigned int choser;
+    cout << "Seleccione algoritmo a usar: " << endl;
+    cout << "1) Bucket sort" << endl;
+    cout << "2) Merge sort" << endl;
+    cout << "3) Insertion sort" << endl;
+    cin >> choser;
+
+
+    switch (choser) {
+        case 1: {
+            if (file_content.size() < 2) {
+                cout << "El archivo solo trae una linea de datos." << endl;
+                cout << "Ingrese el numero de buckets: ";
+                string buckets;
+                cin >> buckets;
+                file_content.push_back(buckets);
+            }
+
+
+            int x = stoi(file_content[1]);
+
+            vector<int> sorted = bucketSort(L, x);
+
+            cout << "Vector ordenado:" << endl;
+            for (int n : sorted) cout << n << " ";
+            cout << endl;
+            break;
+        }
+        case 2: {
+            vector<int> sorted = mergeSort(L);
+            cout << "Vector ordenado:" << endl;
+            for (int n : sorted) cout << n << " ";
+            cout << endl;
+            break;
+        }
+        case 3: {
+            vector<int> sorted = insertionSort(L);
+            cout << "Vector ordenado:" << endl;
+            for (int n : sorted) cout << n << " ";
+            cout << endl;
+            break;
+        }
+        default: {
+            cout << "Opcion invalida";
+            break;
+        }
+    }
+   
+
+    return 0;
+}
