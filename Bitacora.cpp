@@ -49,40 +49,6 @@ void Bitacora::showAll() {
     }
 }
 
-void Bitacora::mostrarAccesosPorIPDesc() const {
-    vector<string> ips;
-    ips.reserve(logs.size());
-    for (size_t i = 0; i < logs.size(); ++i) {
-        ips.push_back(logs[i].ip);
-    }
-
-    sort(ips.begin(), ips.end()); // agrupa iguales
-
-    vector<pair<string, int> > ranking;
-    ranking.reserve(ips.size());
-
-    // contar rachas
-    for (size_t i = 0; i < ips.size(); ) {
-        size_t j = i + 1;
-        while (j < ips.size() && ips[j] == ips[i]) ++j;
-        ranking.push_back(make_pair(ips[i], static_cast<int>(j - i)));
-        i = j;
-    }
-
-    // ordenar por conteo desc, empate por IP asc
-    sort(ranking.begin(), ranking.end(),
-        [](const pair<string, int>& a, const pair<string, int>& b) {
-            if (a.second != b.second) return a.second > b.second; // desc
-            return a.first < b.first; // empate: IP asc
-        });
-
-    cout << "\n=== Accesos por IP (desc) ===\n";
-    for (size_t k = 0; k < ranking.size(); ++k) {
-        const pair<string, int>& p = ranking[k];
-        cout << p.first << " -> " << p.second << '\n';
-    }
-}
-
 
 // Buscar por rango
 void Bitacora::buscarPorRango(const string& monthI, unsigned int dayI, const string& timeI,
@@ -97,3 +63,4 @@ void Bitacora::buscarPorRango(const string& monthI, unsigned int dayI, const str
         }
     }
 }
+
