@@ -32,7 +32,7 @@ vector<int> line_to_vector(string line) {
     return created_vector;
 }
 
-vector<int> file_menu(){
+vector<int> file_menu() {
     string file_name;
     file_name = "test_sort.txt";
     // cout << "Please enter the input text file name: ";
@@ -131,17 +131,19 @@ static vector<int> merge_two(const vector<int>& a, const vector<int>& b) {
 vector<int> merge_sort(vector<int> input_vector) {
     if (input_vector.size() <= 1) return input_vector;
     size_t mid = input_vector.size() / 2;
-    vector<int> left(input_vector.begin(), input_vector.begin() + mid);
-    vector<int> right(input_vector.begin() + mid, input_vector.end());
-    left = merge_sort(left);
-    right = merge_sort(right);
-    return merge_two(left, right);
+    vector<int> left_part(input_vector.begin(), input_vector.begin() + mid);
+    vector<int> right_part(input_vector.begin() + mid, input_vector.end());
+    left_part = merge_sort(left_part);
+    right_part = merge_sort(right_part);
+    cout<<"\nMerging subarrays...\n(" << left_part.size() + right_part.size() << " current items)\n";
+    return merge_two(left_part, right_part);
 }
 
 vector<int> quick_sort(vector<int> input_vector) {
     if (input_vector.size() <= 1)
         return input_vector;
     vector<int> left_part, right_part;
+    cout << "\nArranging items around pivot...\n- Current pivot: " << input_vector[0] << "\n";
     for (int i = 1; i < input_vector.size(); i++) {
         if (input_vector[i] < input_vector[0])
             left_part.push_back(input_vector[i]);
@@ -170,10 +172,10 @@ vector<int> sort_vector(vector<int> input_vector, int sort_algorithm) {
             cout << "* Selection Sort Algorithm\n\n";
             return selection_sort(input_vector);
         case 4:
-            cout << "* Merge Sort Algorithm\n\nBuilding sorted array...\n";
+            cout << "* Merge Sort Algorithm\n";
             return merge_sort(input_vector);
         case 5:
-            cout << "* Quick Sort Algorithm\n\nBuilding sorted array...\n";
+            cout << "* Quick Sort Algorithm\n";
             return quick_sort(input_vector);
         default:
             cout << "Invalid option\nAlgorithm not found\n";
