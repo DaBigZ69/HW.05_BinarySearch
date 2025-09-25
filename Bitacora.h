@@ -1,4 +1,4 @@
-//Bitacora.h aqui se crea la clase bitacora que lee el documento usando la información buscada por los registros
+//Bitacora.h aqui se crea la clase bitacora que lee el documento usando la informaciÃ³n buscada por los registros
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -17,7 +17,7 @@ public:
     void ordenar();
     void guardarArchivo(const string& nameFile);
     void showAll();
-    void mostrarAccesosPorIPDesc() const;
     void buscarPorRango(const string& monthI, unsigned int dayI, const string& timeI,
         const string& monthF, unsigned int dayF, const string& timeF) const;
 };
+
