@@ -1,5 +1,6 @@
-// Registro.h aqui se hace la clase registro que es la que lee la información 
+// Log.h aqui se hace la clase registro que es la que lee la informaciÃ³n 
 #pragma once
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,21 +11,21 @@ using namespace std;
 class Log {
 public:
 	string month;
-	unsigned int day;
+	unsigned int day { 0 };
 	string time;
 	string ip;
 	string motive;
-	long long dateNum;
+	long long dateNum{ 0 };
 
-	Log();
 
 	Log(string m, int d, string t, string i, string mot);
-	void show();
+
+	void show() const;
 
 	static long long change2date(const string& month, int day, const string& time);
 private:
-	static int mesToNum(string month);
-
+	static int monthToNum(string month);
+	 
 public:
 	~Log();
 };
