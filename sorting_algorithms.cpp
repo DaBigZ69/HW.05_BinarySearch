@@ -8,18 +8,6 @@
 
 using namespace std;
 
-vector<string> read_file(string file_name) {
-    ifstream imported_file(file_name);
-    if (!imported_file)
-        cout << "Error opening txt file" << endl;
-    vector<string> file_content;
-    string line;
-    while (getline(imported_file, line))
-        file_content.push_back(line);
-    imported_file.close();
-    return file_content;
-}
-
 vector<int> line_to_vector(string line) {
     int numeric_characters;
     char text_characters;
@@ -33,17 +21,26 @@ vector<int> line_to_vector(string line) {
 }
 
 vector<int> file_menu() {
-    string file_name;
-    file_name = "test_sort.txt";
-    // cout << "Please enter the input text file name: ";
-    // cin >> file_name; // test_sort.txt
-    vector<string> file_content = read_file(file_name);
+    string file_name, line;
+    cout << "Please enter the input text file name: ";
+    cin >> file_name;
+    ifstream imported_file(file_name);
+    if (!imported_file) {
+        cout << "\nError opening txt file" << endl;
+        return line_to_vector("0");
+    }
+    vector<string> file_content;
+    while (getline(imported_file, line))
+        file_content.push_back(line);
+    imported_file.close();
     return line_to_vector(file_content[0]);
 }
 
-int user_menu(){
+int user_menu(vector<int> input_vector){
+    if (input_vector == line_to_vector("0"))
+        return 0;
     int sort_algorithm;
-    cout << "Sorting Algorithms\n[1] Bucket Sort\n[2] Insertion Sort\n[3] Selection Sort\n[4] Merge Sort\n[5] Quick Sort\n\nPlease choose the algorithm to use: ";
+    cout << "\nSorting Algorithms\n[1] Bucket Sort\n[2] Insertion Sort\n[3] Selection Sort\n[4] Merge Sort\n[5] Quick Sort\n\nPlease choose the algorithm to use: ";
     cin >> sort_algorithm;
     return sort_algorithm;
 }
@@ -161,7 +158,9 @@ vector<int> quick_sort(vector<int> input_vector) {
 
 vector<int> sort_vector(vector<int> input_vector, int sort_algorithm) {
     print_vector(input_vector, false);
-    switch(sort_algorithm){
+    switch(sort_algorithm) {
+        case 0:
+            return input_vector;
         case 1:
             cout << "* Bucket Sort Algorithm\n\n";
             return bucket_sort(input_vector);
@@ -185,7 +184,7 @@ vector<int> sort_vector(vector<int> input_vector, int sort_algorithm) {
 
 int main() {
     vector<int> L = file_menu();
-    vector<int> L_s = sort_vector(L, user_menu());
+    vector<int> L_s = sort_vector(L, user_menu(L));
     print_vector(L_s, true);
     return 0;
 }
