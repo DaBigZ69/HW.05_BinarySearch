@@ -1,9 +1,16 @@
+// Gerardo Alberto Mendoza Castillo A01666338
+// Fabian Lopez Perez A01661836
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
+
+// Test file:
+// number-list-binary-tree.txt
 
 vector<int> line_to_vector(string line) {
     int numeric_characters;
@@ -37,7 +44,7 @@ vector<vector<int>> build_binary_tree(vector<int> number_set) {
     vector<vector<int>> binary_tree(1, vector<int>(4, 0));
     binary_tree[0][0] = number_set[0];
     binary_tree[0][3] = 1;
-    for(int i = 1; i < number_set.size(); i++) {
+    for (int i = 1; i < number_set.size(); i++) {
         int level = 2, node_index = 0;
         bool active_comparison = true;
         while(active_comparison == true) {
@@ -50,23 +57,25 @@ vector<vector<int>> build_binary_tree(vector<int> number_set) {
                 active_comparison = false;
             }
             else {
-                if (number_set[i] < binary_tree[node_index][0])
-                    for(float j = 1; j < binary_tree.size(); j++)
+                if (number_set[i] < binary_tree[node_index][0]) {
+                    for (float j = 1; j < binary_tree.size(); j++)
                         if (binary_tree[j][0] == binary_tree[node_index][1]) {
                             node_index = j;
                             j = binary_tree.size();
                         }
-                if (number_set[i] > binary_tree[node_index][0])
-                    for(float j = 1; j < binary_tree.size(); j++)
+                    level += 1;
+                }
+                else if (number_set[i] > binary_tree[node_index][0]) {
+                    for (float j = 1; j < binary_tree.size(); j++)
                         if (binary_tree[j][0] == binary_tree[node_index][2]) {
                             node_index = j;
                             j = binary_tree.size();
                         }
-                level += 1;
+                    level += 1;
+                }
             }
         }
-        cout <<"\nValue: " << number_set[i] << " - Level: " << level;
-        
+ 
         
         binary_tree.push_back(vector<int>(4, 0));
         binary_tree[binary_tree.size() - 1][0] = number_set[i];
@@ -75,26 +84,32 @@ vector<vector<int>> build_binary_tree(vector<int> number_set) {
     return binary_tree;
 }
 
+void show_tree_details(vector<vector<int>> binary_tree) {;
+    cout << "\nBinary Tree Details\n";
+    for (int i = 0; i < binary_tree.size(); i++) {
+        cout << "\nNode: " << binary_tree[i][0] << "\n+ Position in tree: Level " << binary_tree[i][3];
+        if (i == 0)
+            cout << "\n+ Root node";
+        else
+            for (float j = 0; j < binary_tree.size(); j++)
+                if (binary_tree[j][1] == binary_tree[i][0] || binary_tree[j][2] == binary_tree[i][0]) {
+                    cout << "\n+ Parent node: " << binary_tree[j][0];
+                    j = binary_tree.size();
+                }
+        if (binary_tree[i][1] != 0 && binary_tree[i][2] != 0)
+            cout << "\n+ Produced nodes: " << binary_tree[i][1] << " (Left), " << binary_tree[i][2] << " (Right)\n";
+        else if (binary_tree[i][1] != 0)
+            cout << "\n+ Produced node: " << binary_tree[i][1] << " (Left)\n";
+        else if (binary_tree[i][2] != 0)
+            cout << "\n+ Produced node: " << binary_tree[i][2] << " (Right)\n";
+        else
+            cout << "\n+ Zero produced nodes\n";
+    }
+}
+
 int main() {
     vector<int> number_set = import_vector();
     vector<vector<int>> binary_tree = build_binary_tree(number_set);
-    
-    cout << "\n\n";
-    for(int i = 0; i < binary_tree.size(); i++)
-        cout << binary_tree[i][0] << ", ";
-    cout << "\n";
-    for(int i = 0; i < binary_tree.size(); i++)
-        cout << binary_tree[i][1] << ", ";
-    cout << "\n";
-    for(int i = 0; i < binary_tree.size(); i++)
-        cout << binary_tree[i][2] << ", ";
-    cout << "\n";
-    for(int i = 0; i < binary_tree.size(); i++)
-        cout << binary_tree[i][3] << ", ";
-    cout << "\n";
-    
-    
+    show_tree_details(binary_tree);
     return 0;
 }
-
-// number-list-binary-tree.txt
