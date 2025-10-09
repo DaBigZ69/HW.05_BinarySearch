@@ -32,7 +32,7 @@ int main() {
 			cout << "Inserte el valor a agregar: " << "\n";
 			cin >> value;
 
-			cout << "Eliga la parte de la lista donde va a insertar el valor " << value << endl;
+			cout << "Elija la parte de la lista donde va a insertar el valor " << value << endl;
 			cout << "1. Al principio" << endl;
 			cout << "2. Al final" << endl;
 			cout << "3. En una posicion especifica de la lista" << endl;
@@ -46,7 +46,7 @@ int main() {
 				L.push_back(value);
 			}
 			else if (form == 3) {
-				cout << "En que posicon asignaras el valor " << value << ": " << endl;
+				cout << "En que posicon asignaras el valor " << value << ": (El conteo inicia desde 0)" << endl;
 				cin >> position;
 
 				if (position >= 0 && position <= L.size()) {
@@ -59,6 +59,8 @@ int main() {
 			else {
 				cout << "Opcion no valida, eliga otra" << endl;
 			}
+			cout << "La lista tiene: " << L.size() << " elementos" << endl;
+
 			break;
 		}
 		case 3: {
@@ -67,7 +69,7 @@ int main() {
 			}
 			else {
 				int eraser;
-				cout << "Ingrese la posicion del elemento a borrar: " << "\n";
+				cout << "Ingrese la posicion del elemento a borrar (El conteo inicia desde 0): " << "\n";
 				cin >> eraser;
 
 				if (eraser >= 0 && eraser <= L.size()) {
@@ -81,7 +83,13 @@ int main() {
 			break;
 		}
 		case 4: {
-
+			cout << "Lista L: " << endl;
+			cout << "[";
+			for (int n : L) {
+				cout << n << " ";
+			}
+			cout << "]" << endl;
+			break;
 		}
 		case 5: {
 			cout << "Terminando el proceso..." << endl;
@@ -89,7 +97,7 @@ int main() {
 			break;
 		}
 		default: {
-			cout << "Opcion no valida, eliga otra" << endl;
+			cout << "Opcion no valida, elija otra" << endl;
 		}
 
 		}
