@@ -1,0 +1,100 @@
+//HW 11
+/*
+Gerardo Mendoza
+Fabian Lopez
+*/
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+	vector<int> L;
+	int switcher = 1, choser;
+
+	while (switcher != 0) {
+		cout << "Ingrese el numero de la accion a realizar: " << endl;
+		cout << "1. Inicializar lista L" << endl;
+		cout << "2. Agregar valor a la lista" << endl;
+		cout << "3. Eliminar valor de la lista" << endl;
+		cout << "4. Desplegar lista" << endl;
+		cout << "5. Finalizar" << endl;
+		cin >> choser;
+
+		switch (choser) {
+		case 1: {
+			L.clear();
+			cout << "Se ha inicializado una lista vacia " << endl;
+			break;
+
+		case 2: {
+			int value, form, position;
+			cout << "Inserte el valor a agregar: " << "\n";
+			cin >> value;
+
+			cout << "Eliga la parte de la lista donde va a insertar el valor " << value << endl;
+			cout << "1. Al principio" << endl;
+			cout << "2. Al final" << endl;
+			cout << "3. En una posicion especifica de la lista" << endl;
+			cin >> form;
+
+			if (form == 1) {
+				L.insert(L.begin(), value);
+
+			}
+			else if (form == 2) {
+				L.push_back(value);
+			}
+			else if (form == 3) {
+				cout << "En que posicon asignaras el valor " << value << ": " << endl;
+				cin >> position;
+
+				if (position >= 0 && position <= L.size()) {
+					L.insert(L.begin() + position, value);
+				}
+				else {
+					cout << "No existe dicha posibilidad" << endl;
+				}
+			}
+			else {
+				cout << "Opcion no valida, eliga otra" << endl;
+			}
+			break;
+		}
+		case 3: {
+			if (L.empty()) {
+				cout << "La lista esta vacia no se puede eliminar nada" << endl;
+			}
+			else {
+				int eraser;
+				cout << "Ingrese la posicion del elemento a borrar: " << "\n";
+				cin >> eraser;
+
+				if (eraser >= 0 && eraser <= L.size()) {
+					L.erase(L.begin() + eraser);
+					cout << "Se ha eliminado el valor en la posicion " << eraser << endl;
+				}
+				else {
+					cout << "No existe un valor en la posicion pedida" << endl;
+				}
+			}
+			break;
+		}
+		case 4: {
+
+		}
+		case 5: {
+			cout << "Terminando el proceso..." << endl;
+			switcher = 0;
+			break;
+		}
+		default: {
+			cout << "Opcion no valida, eliga otra" << endl;
+		}
+
+		}
+
+		}
+	}
+	return 0;
+}
